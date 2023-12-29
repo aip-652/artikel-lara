@@ -11,6 +11,9 @@
     .card{
         margin: 10px;
     }
+    #a{
+        display: inline-block;
+    }
   </style>
 </head>
 
@@ -22,13 +25,18 @@
 
   <div>
     @foreach($posts as $post)
-    @php($post = explode(",", $post))
     <div class="card mb-3">
         <div class="card-body">
-            <h5 class="card-title">{{$post[1]}}</h5>
-            <p class="card-text">{{$post[2]}}</p>
-            <p class="card-text"><small class="text-muted">Last updated at {{date('d M Y H:i', strtotime($post[3]))}}</small></p>
-            <a href="{{url("posts/$post[0]")}}" class="btn btn-primary">Selengkapnya</a>
+            <h5 class="card-title">{{$post->title}}</h5>
+            <p class="card-text">{{$post->content}}</p>
+            <p class="card-text"><small class="text-muted">{{date('d M Y H:i', strtotime($post->created_at))}}</small></p>
+            <a href='{{ url("posts/$post->id") }}' class="btn btn-primary" id="a">Selengkapnya</a>
+            <a href='{{ url("posts/$post->id/edit") }}' class="btn btn-success" id="a">Edit</a>
+            <form method="POST" action='{{url("posts/$post->id/delete")}}' id="a">
+                @method('DELETE')
+                @csrf
+                <button class="btn btn-danger" type="submit">Hapus</button>
+            </form>
         </div>
     </div>
     @endforeach
